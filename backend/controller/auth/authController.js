@@ -1,6 +1,8 @@
 import Employee from '../../model/employee.js';
 import JWT from 'jsonwebtoken';
 
+let newToken;
+
 const createToken = ( id ) => {
     return JWT.sign(
         { id },
@@ -8,13 +10,23 @@ const createToken = ( id ) => {
         { expiresIn: '15min'}
         );
 }
+
+const getLogin = ( req, res ) => {
+    return res.render('login.ejs',{
+        title: 'Login',
+    })
+}
+
 const login = async ( req, res ) => {
     try {
         const emp = await Employee.login( req.body );
         const token = createToken( emp._id );
-        return res.status(200).json({
-            employee: emp._id,
-            token: token
+        newToken = {
+            token,
+            id : emp._id
+        }
+        return res.render('./emp/home.ejs',{
+            title : 'Home',
         });
     } catch (error) {
         console.log(error.message);
@@ -22,13 +34,22 @@ const login = async ( req, res ) => {
     }
 }
 
+const getSignUp = ( req, res ) => {
+    return res.render( 'signup.ejs', {
+        title: 'Sign Up',
+    })
+}
+
 const signup = async ( req, res ) => {
     try {
         const emp = await Employee.signup( req.body );
         const token = createToken( emp._id );
-        return res.status(201).json({
-            employee: emp._id,
-            token: token
+        newToken = {
+            token,
+            id : emp._id
+        }
+        return res.render('./emp/home.ejs', {
+            title: "Home"
         });
     } catch (error) {
         console.log(error.message);
@@ -38,7 +59,10 @@ const signup = async ( req, res ) => {
 
 const auth = {
     login,
-    signup
+    signup,
+    getLogin,
+    getSignUp,
+    newToken
 };
 
 export default auth;

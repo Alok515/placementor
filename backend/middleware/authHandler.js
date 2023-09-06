@@ -1,18 +1,19 @@
 import jwt from 'jsonwebtoken';
+import auth from '../controller/auth/authController.js'
 
 const checkAuth = (req, res, next) => {
-    const { authorization } = req.headers;
-    if ( !authorization ){
-        return res.status(401).json({ msg: 'Missing authorization token please Login' }); 
+    const newToken = auth.newToken;
+    if(!newToken?.token) {
+        return res.render('login.ejs', {
+            title: 'Login Please',
+        })
     }
     try {
-        const token1 = authorization.split(' ')[1];
-        const { id } = jwt.verify(token1, process.env.JWT_SECRET);
-        req.emp = id;
+        const token = newToken?.token;
+        jwt.verify(token, process.env.JWT_SECRET);
     next();
     } catch (error) {
         console.log(error.message);
-        return res.status(401).json({ error: error.message });
     }
 }
 

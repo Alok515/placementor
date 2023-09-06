@@ -6,7 +6,7 @@ const router = new Router();
 
 router.use(checkAuth);
 router.route('/').get((req, res) => {
-    res.json({"msg": "Namasthy have a nice day!"});
+    return res.render('emp/home.ejs');
 });
 
 router.route('/addstudent/:id').post(studentController.addStudent);
