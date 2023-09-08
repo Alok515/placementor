@@ -1,15 +1,9 @@
 import jwt from 'jsonwebtoken';
-import auth from '../controller/auth/authController.js'
 
 const checkAuth = (req, res, next) => {
-    const newToken = auth.newToken;
-    if(!newToken?.token) {
-        return res.render('login.ejs', {
-            title: 'Login Please',
-        })
-    }
     try {
-        const token = newToken?.token;
+        const header = req.headers.authorization;
+        const token = header.split(' ')[1];
         jwt.verify(token, process.env.JWT_SECRET);
     next();
     } catch (error) {

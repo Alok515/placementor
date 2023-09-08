@@ -33,7 +33,7 @@ interviewSchema.statics.getInterview = async function ( id ) {
     if ( !id ) {
         throw new Error ( 'Please provide a Proper id to view interviews ');
     }
-    const interviews = await find({ empId: id });
+    const interviews = await this.find({ empId: id });
     return interviews;
 }
 

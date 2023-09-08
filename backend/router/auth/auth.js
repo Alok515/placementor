@@ -7,7 +7,7 @@ router.route('/').get((req, res) => {
     res.json({"key": "holla"});
 });
 
-router.route('/login').get(auth.getLogin).post(auth.login);
-router.route('/signup').get(auth.getSignUp).post(auth.signup);
+router.route('/login').post(auth.login);
+router.route('/signup').post(auth.signup);
 
 export default router;

@@ -41,7 +41,7 @@ const addinterview = async (req, res) => {
     const interview = req.body;
     interview.empId = id;
     try {
-        const newInterview = await Interview.addinterview( interview );
+        const newInterview = await Interview.addInterview( interview );
         return res.status(201).json( newInterview );
     } catch (error) {
         console.log(error.message);
