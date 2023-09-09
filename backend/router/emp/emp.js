@@ -13,5 +13,8 @@ router.route('/addstudent/:id').post(studentController.addStudent);
 router.route('/getstudent/:id').get(studentController.getStudent);
 router.route('/addinterview/:id').post(studentController.addinterview);
 router.route('/getinterview/:id').get(studentController.getInterview);
+router.route('/updatestudent/:id').put(studentController.updateStudent);
+router.route('/updateinterview/:id').post(studentController.updateInterview);
+router.route('/result/:id').get(studentController.getResult);
 
 export default router;

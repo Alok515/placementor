@@ -1,14 +1,21 @@
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../hook/useAuth';
 
 const Login = () => {
     const { register, handleSubmit } = useForm();
+    const navigate = useNavigate();
+    const { setEmp } = useAuth();
 
     const onSubmit = async (data)=> {
         try {
             const res = await axios.post('http://localhost:8000/auth/login', data);
             const empData = res.data;
             localStorage.setItem("emp", JSON.stringify(empData.emp));
+            setEmp(empData.emp);
+            navigate('/', { replace: true });
+            window.location.reload(false);
         } catch (error) {
             console.log(error.massage);
         }

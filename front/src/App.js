@@ -5,19 +5,21 @@ import Home from './pages/home';
 import Nav from './pages/nav';
 import Student from './pages/emp/student';
 import Interview from './pages/emp/interview';
+import Result from './pages/emp/result';
 
 function App() {
-  const emp = localStorage.getItem('emp');
-
+  const emp1 = JSON.parse(localStorage.getItem('emp'));
+  
   return (
     <>
       <BrowserRouter>
         <Routes>
-            { emp && 
+            { emp1 && 
             <Route>
               <Route index element={<Home />}/> 
               <Route path='student' element={<Student  />} />
               <Route path='interview' element={<Interview />} />
+              <Route path='result' element={<Result />}/>
             </Route>
             }
             <Route index element={<Nav />}/>

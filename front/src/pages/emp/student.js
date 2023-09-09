@@ -2,7 +2,65 @@ import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 
-const AddStudent = () => {
+const Student = () => {
+  const [ students , setStudent ] = useState([]);
+  const [ count, setCount ] = useState(0);
+
+  const Details = ({student})=>{
+    const changeIt = async () => {
+      try {
+        const emp = JSON.parse(localStorage.getItem('emp'));
+        const res = await axios.put('http://localhost:8000/emp/updatestudent/' + emp.id , {
+          name: student.name,
+          email: student.email
+        },{
+          headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + emp.token,
+          }
+        });
+        if ( res.status === 200 ){
+          setCount(count + 1);
+          console.log('Change done')
+        }
+      } catch (error) {
+        console.log(error.message);
+      }
+    }
+    
+    return <div>
+      <p>Name :{student.name}</p>
+      <p>Collage :{student.collage}</p>
+      <p>Batch :{student.batch}</p>
+      <p>Dsa Score :{student.dsa}</p>
+      <p>React Score :{student.react}</p>
+      <p>Web Dev Score :{student.webdev}</p>
+      <p>Placement Status :{student.isPlaced ? "Placed" : "Not Placed"}</p>
+      { !student.isPlaced && 
+        <>
+          <input type="radio" name="isPlaced" value="Placed" onChange={changeIt}/> Mark as Placed 
+        </>
+      }
+    </div>
+  }
+
+  const getData = async () => {
+    const emp = JSON.parse(localStorage.getItem('emp'));
+    const res = await axios.get('http://localhost:8000/emp/getstudent/' + emp.id , {
+      headers: { 
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + emp.token,
+      }
+    });
+    const studentData = res.data;
+    setStudent(studentData);
+  }
+
+  useEffect(() => {
+    getData();
+  }, [count]);
+
+  const AddStudent = () => {
     const { register, handleSubmit } = useForm();
     
     const Input = ({ placeholder, type, name, register }) => {
@@ -23,6 +81,7 @@ const AddStudent = () => {
         });
         if(res.status === 201) {
           console.log("Successfully add student");
+          setCount(count + 1);
         }
       } catch (error) {
         console.log(error.message);
@@ -41,38 +100,7 @@ const AddStudent = () => {
           <button type='submit'>Add Student</button>
         </form>
     </section>
-}
-
-const Details = ({student})=>{
-  return <div>
-    <p>Name :{student.name}</p>
-    <p>Collage :{student.collage}</p>
-    <p>Batch :{student.batch}</p>
-    <p>Dsa Score :{student.dsa}</p>
-    <p>React Score :{student.react}</p>
-    <p>Web Dev Score :{student.webdev}</p>
-    <p>Placement Status :{student.isPlaced ? "Placed" : "Not Placed"}</p>
-  </div>
-}
-
-const Student = () => {
-  const [ students , setStudent ] = useState([]);
-
-  const getData = async () => {
-    const emp = JSON.parse(localStorage.getItem('emp'));
-    const res = await axios.get('http://localhost:8000/emp/getstudent/' + emp.id , {
-      headers: { 
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + emp.token,
-      }
-    });
-    const studentData = res.data;
-    setStudent(studentData);
   }
-
-  useEffect(() => {
-    getData();
-  }, []);
 
   return (
     <div>

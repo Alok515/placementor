@@ -14,7 +14,7 @@ const interviewSchema = new Schema({
         type: Schema.Types.ObjectId,
         required: true,
         ref: "employee"
-    }
+    },
 });
 
 interviewSchema.statics.addInterview = async function ( interview ) {
