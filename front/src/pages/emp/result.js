@@ -2,10 +2,10 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 const Display = ({ result }) => {
-    return <div>
-        <p>Interview Result :{result.result}</p>
-        <p>Interview Name :{result.interviewName}</p>
-        <p>Student Name :{result.studentName}</p>
+    return <div className="bg-yellow-200 m-2 p-2">
+        <p>Interview Result :<b className="pl-4">{result.result}</b></p>
+        <p>Interview Name :<b className="pl-4">{result.interviewName}</b></p>
+        <p>Student Name :<b className="pl-6">{result.studentName}</b></p>
     </div>
 }
 
@@ -31,10 +31,10 @@ const Result = () => {
     }, [])
 
     return (
-        <>
-            <div>Result</div>
+        <section className="m-8 bg-gray-200 p-4">
+            <div className="text-center font-bold mb-6">Result</div>
             { results && results.map(result => <Display result={result} key={result._id} />)}
-        </>
+        </section>
     )
 }
 

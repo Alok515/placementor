@@ -1,6 +1,8 @@
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
+import moment from 'moment';
+import toast from 'react-hot-toast';
 
 const Interview = () => {
   const [ interviews, setInterview ] = useState([]);
@@ -29,19 +31,19 @@ const Interview = () => {
         }
       });
       if(res.status === 201){
-        console.log('Added Student');
+        toast.success('Added Student');
         window.location.reload(false);
       }
     }
 
-    return <div>
-      <p>Interview Name :{interview.interview}</p>
-      <p>Interview Date :{interview.date}</p>
+    return <div className='m-4 bg-green-200 p-4'>
+      <p>Interview Name :<b className='pl-4'>{interview.interview}</b></p>
+      <p>Interview Date :<b className='pl-4'>{moment(interview.date).format('DD/MM/YYYY')}</b></p>
+      <button onClick={addItHere} className='bg-blue-400 p-1 rounded-md hover:bg-blue-300'>Add Student</button>
       <div>
         Add Student By Name :
         <input type="text" name="student" placeholder="Enter student name" onChange={e=>addIt(e.target.value)}/>
         { newStudent && newStudent.map(student => <p key={student._id}>{student.name}</p>)}
-        <button onClick={addItHere}>Add Student</button>
       </div>
     </div>
   }
@@ -85,25 +87,28 @@ const Interview = () => {
           }
         });
         if(res.status === 201) {
-          console.log("Successfully added interview");
+          toast.success("Successfully added interview");
           setCount(count + 1);
         }
       } catch (error) {
         console.log(error.message);
+        toast.error(error.response?.data?.error);
       }
     }
-    return <section>
-      <h2>Add Interview Here</h2>
+    return <section className='m-12 mr-32 ml-32 bg-blue-300 p-4'>
+      <h2 className='text-center font-bold'>Add Interview Here</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div>
+        <div className='flex justify-between mb-4'>
           <label htmlFor='interview'>Interview</label>
           <input type='text' name='interview' placeholder='Interview Name' id='interview' {...register('interview')}/>
         </div>
-        <div>
+        <div className='flex justify-between mb-4'>
           <label htmlFor='date'>Deadline Date</label>
           <input type='date' name='date' id='date' {...register('date')}/>
         </div>
-        <button type='submit'>Add Interview</button>
+        <div className='text-center'>
+        <button type='submit' className='bg-green-300 p-2 rounded-md hover:bg-green-200'>Add Interview</button>
+        </div>
       </form>
     </section>
   }

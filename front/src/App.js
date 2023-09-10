@@ -6,12 +6,16 @@ import Nav from './pages/nav';
 import Student from './pages/emp/student';
 import Interview from './pages/emp/interview';
 import Result from './pages/emp/result';
+import { Toaster } from 'react-hot-toast';
 
 function App() {
   const emp1 = JSON.parse(localStorage.getItem('emp'));
   
   return (
     <>
+      <div>
+        <Toaster position='top-right' />
+      </div>
       <BrowserRouter>
         <Routes>
             { emp1 && 

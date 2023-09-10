@@ -16,5 +16,6 @@ router.route('/getinterview/:id').get(studentController.getInterview);
 router.route('/updatestudent/:id').put(studentController.updateStudent);
 router.route('/updateinterview/:id').post(studentController.updateInterview);
 router.route('/result/:id').get(studentController.getResult);
+router.route('/csv/:id').get(studentController.csvHandler);
 
 export default router;

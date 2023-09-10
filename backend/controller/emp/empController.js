@@ -126,6 +126,46 @@ const getResult = async (req, res) => {
     }
 }
 
+import objectToCsv from 'objects-to-csv';
+import moment from 'moment';
+import { resolve } from 'path';
+
+const formatDataTo = (data) => {
+    const newData = data.map(d => ({
+        result: d.result,
+        interview: d.interviewId.interview,
+        interviewDate: moment(d.interviewId.date).format('DD/MM/YYYY'),
+        studentName: d.studentId.name,
+        studentBatch: d.studentId.batch,
+        studentEmail: d.studentId.email,
+        studentCollage: d.studentId.collage,
+        studentDsa: d.studentId.dsa,
+        studentReact: d.studentId.react,
+        studentWeb: d.studentId?.webdev,
+        placementStatus: d.studentId.isPlaced ? 'Placed' : 'Not Placed'
+    }));
+    return newData;
+}
+import { dirname, join } from "path";
+import { fileURLToPath } from "url";
+
+const csvHandler = async (req, res) => {
+    const id = req.params.id;
+    try {
+        const __dirname = dirname(fileURLToPath(import.meta.url));
+        console.log(__dirname);
+        const data = await Result.find({ empId: id }).populate({ path: 'studentId', model: 'Student' }).populate({ path: 'interviewId', model: 'Interview' });
+        const dataFormat = formatDataTo(data);
+        const csvData = new objectToCsv(dataFormat);
+        const pathToFile = join(__dirname, '../../download');
+        await csvData.toDisk('./download/test.csv', { allColumns: true });
+        console.log(csvData);
+        res.status(200).download(resolve(pathToFile, 'test.csv'));
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 const studentController = {
     getStudent,
     addStudent,
@@ -133,7 +173,8 @@ const studentController = {
     addinterview,
     updateStudent,
     updateInterview,
-    getResult
+    getResult,
+    csvHandler,
 }
 
 export default studentController;
