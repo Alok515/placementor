@@ -113,5 +113,3 @@ This application uses JWT for authentication. To access protected routes, includ
 Make sure to include the appropriate request data and authentication token when accessing these routes.
 
 You can customize the behavior and functionality of these routes by editing the code in the Express application's route handlers.
-
-Feel free to expand upon this README to include additional information about the application, its usage, and any further instructions for deployment or customization.
